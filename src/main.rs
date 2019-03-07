@@ -17,14 +17,16 @@ struct ProxyMiddleware {
 }
 
 impl ProxyMiddleware {
-    fn new()
+    fn new(new: Vec<reqwest::Proxy>) -> ProxyMiddleware {
+        
+    }
 }
 
 type Callback = fn();
 
 struct Rqwst {
     url: String,
-    client: Option<reqwest::Client>, // create empty and then add Client
+    //client: Option<reqwest::Client>, // create empty and then add Client
     cb: Option<Callback>,
 }
 
@@ -32,7 +34,7 @@ impl Rqwst {
     fn new(url: &str) -> Rqwst {
         Rqwst{
             url,
-            client: None,
+            //client: None,
             cb: None,
         }
     }
@@ -41,10 +43,10 @@ impl Rqwst {
         self.cb = cb;
         return self
  
-    fn add_client(&mut self, client: reqwest::Client) -> Rqwst {
-        self.client = client;
-        return self
-    }
+   // fn add_client(&mut self, client: reqwest::Client) -> Rqwst {
+   //     self.client = client;
+   //     return self
+   // }
 
 }
 
@@ -52,8 +54,27 @@ struct Pool {
     pool: VecDeque<Rqwst>,
 }
 
+impl Pool {
+    fn new(pool: VecDeque<Rqwst>) -> Pool {
+        Pool {pool}
+    }
+
+
+    fn empty() -> Pool {
+        let pool: VecDeque<Rqwst> = VecDeque::new();
+        Pool {pool}
+    }
+
+}
+
 struct Spider{
     pool: Pool,
+}
+
+impl Spider {
+    fn new() -> Spider {
+        Spider { pool: Pool::new() }
+    }
 }
 
 fn main(){
